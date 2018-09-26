@@ -15,6 +15,9 @@ public abstract class Line {
         this.responseType = responseType;
     }
 
+    public Line() {
+    }
+
     public Service getService() {
         return service;
     }

@@ -1,23 +1,27 @@
 package com.gmail.lev.romanenko.data.line.lines;
 
+import com.gmail.lev.romanenko.data.line.Line;
+
 import java.util.Date;
 
-public class CLine {
-    private int time;
+public class CLine extends Line {
+    private int WaitingTime;
     private Date date;
 
     public CLine(int time, Date date) {
-        this.time = time;
+        this.WaitingTime = time;
         this.date = date;
     }
 
-    public int getTime() {
-        return time;
-
+    public CLine() {
     }
 
-    public void setTime(int time) {
-        this.time = time;
+    public int getWaitingTime() {
+        return WaitingTime;
+    }
+
+    public void setWaitingTime(int time) {
+        this.WaitingTime = time;
     }
 
     public Date getDate() {
