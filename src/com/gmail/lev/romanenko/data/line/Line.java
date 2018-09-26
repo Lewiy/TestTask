@@ -5,9 +5,9 @@ import com.gmail.lev.romanenko.data.constituents.Response;
 import com.gmail.lev.romanenko.data.constituents.Service;
 
 public abstract class Line {
-    private Service service;
-    private Question questionType;
-    private Response responseType;
+    protected Service service;
+    protected Question questionType;
+    protected Response responseType;
 
     public Line(Service service, Question questionType, Response responseType) {
         this.service = service;

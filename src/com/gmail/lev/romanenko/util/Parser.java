@@ -1,11 +1,16 @@
 package com.gmail.lev.romanenko.util;
 
 import com.gmail.lev.romanenko.Constants.Constans;
+import com.gmail.lev.romanenko.data.constituents.DatePeriod;
+import com.gmail.lev.romanenko.data.constituents.Question;
+import com.gmail.lev.romanenko.data.constituents.Response;
+import com.gmail.lev.romanenko.data.constituents.Service;
 import com.gmail.lev.romanenko.data.line.lines.CLine;
 import com.gmail.lev.romanenko.data.line.lines.DLine;
 import com.gmail.lev.romanenko.regex.Regex;
 
 import java.nio.file.Files;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Parser {
@@ -25,22 +30,44 @@ public class Parser {
         while (sc.hasNextLine()){
            String[] parts =  sc.next().split(Regex.LINE_SPLITER);
            if(parts[0].equals(Constans.WAITING_LINE)){
-               CLine cLine = new CLine();
+              /* CLine cLine = new CLine();
                cLine.setService();
                cLine.setQuestionType();
                cLine.setResponseType();
                cLine.setDate();
-               cLine.setWaitingTime();
+               cLine.setWaitingTime();*/
+               CLine.Builder()
+                       .waitingTime()
+                       .date()
+                       .build;
 
            }else if(parts[0].equals(Constans.QUERY_LINE)){
-               DLine dLine = new DLine();
-               dLine.setService();
-               dLine.setQuestionType();
-               dLine.setResponseType();
-               dLine.setDatePeriod();
+               DLine.Builder()
+                       .datePeriod()
+                       .build;
             }
             System.out.println(sc.nextLine());
         }
+
+    }
+
+    private Service createService(){
+
+    }
+
+    private Question createQuestion(){
+
+    }
+
+    private Response createResponseType(){
+
+    }
+
+    private DatePeriod createDatePeriod(){
+
+    }
+
+    private Date createDate(){
 
     }
 }
