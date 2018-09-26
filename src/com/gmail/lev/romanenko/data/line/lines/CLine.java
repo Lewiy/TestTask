@@ -2,7 +2,7 @@ package com.gmail.lev.romanenko.data.line.lines;
 
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
-import com.gmail.lev.romanenko.data.constituents.Service;
+import com.gmail.lev.romanenko.data.constituents.ServiceEntity;
 import com.gmail.lev.romanenko.data.line.Line;
 
 import java.util.Date;
@@ -33,14 +33,14 @@ public class CLine extends Line {
     }
 
     public static class Builder {
-        private Service service;
+        private ServiceEntity serviceEntity;
         private Question questionType;
         private Response responseType;
         private int waitingTime;
         private Date date;
 
-        public Builder(Service service, Question questionType, Response responseType) {
-            this.service = service;
+        public Builder(ServiceEntity serviceEntity, Question questionType, Response responseType) {
+            this.serviceEntity = serviceEntity;
             this.questionType = questionType;
             this.responseType = responseType;
         }
@@ -62,7 +62,7 @@ public class CLine extends Line {
 
 
     private CLine(Builder builder) {
-        this.service = builder.service;
+        this.serviceEntity = builder.serviceEntity;
         this.questionType = builder.questionType;
         this.responseType = builder.responseType;
         this.waitingTime = builder.waitingTime;

@@ -5,7 +5,7 @@ import com.gmail.lev.romanenko.data.Data;
 import com.gmail.lev.romanenko.data.constituents.DatePeriod;
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
-import com.gmail.lev.romanenko.data.constituents.Service;
+import com.gmail.lev.romanenko.data.constituents.ServiceEntity;
 import com.gmail.lev.romanenko.data.line.lines.CLine;
 import com.gmail.lev.romanenko.data.line.lines.DLine;
 import com.gmail.lev.romanenko.exception.InvalidDataFileDatePeriod;
@@ -31,7 +31,7 @@ public class Parser {
     }
 
 
-    public void parseData() {
+    public Data parseData() {
         Data data = new Data();
         Map<DLine, List<CLine>> DAndCLines = new LinkedHashMap<>();
         List<CLine> cLines = new ArrayList<>();
@@ -54,7 +54,9 @@ public class Parser {
                 DAndCLines.put(dLine, new ArrayList<>(cLines));
             }
         }
-        int a = 0;
+        data.setDAndCLines(DAndCLines);
+
+        return data;
     }
 
     private Scanner prepareScanner() {
@@ -67,16 +69,16 @@ public class Parser {
         return sc;
     }
 
-    private Service checkServiceString(String serviceString) {
-        Service service = null;
+    private ServiceEntity checkServiceString(String serviceString) {
+        ServiceEntity serviceEntity = null;
         try {
             if (RegexValidation.validationService(serviceString)) {
-                service = createService(serviceString);
+                serviceEntity = createService(serviceString);
             }
         } catch (InvalidDataFileService invalidDataFileService) {
             invalidDataFileService.printStackTrace();
         }
-        return service;
+        return serviceEntity;
     }
 
     private boolean checkServiceLenght(String[] serviceContains) {
@@ -123,20 +125,20 @@ public class Parser {
         return datePeriod;
     }
 
-    private Service createService(String serviceString) {
-        Service service = null;
+    private ServiceEntity createService(String serviceString) {
+        ServiceEntity serviceEntity = null;
         String[] serviceParts = serviceString.split(Constants.NUMBER_SPLITER);
         String serviceId = serviceParts[0];
         if (checkServiceLenght(serviceParts)) {
-            service = new Service(serviceId, createVariation(serviceParts[1]));
+            serviceEntity = new ServiceEntity(serviceId, createVariation(serviceParts[1]));
         } else {
-            service = new Service(serviceId, null);
+            serviceEntity = new ServiceEntity(serviceId, null);
         }
-        return service;
+        return serviceEntity;
     }
 
-    private Service.Variation createVariation(String variation) {
-        return new Service.Variation(variation);
+    private ServiceEntity.Variation createVariation(String variation) {
+        return new ServiceEntity.Variation(variation);
     }
 
     private Question createQuestion(String questionString) {
@@ -190,7 +192,6 @@ public class Parser {
             }
             return date;
         } else return null;
-
     }
 
     private int createWaitingTime(String waitingTimeString) {
@@ -198,5 +199,4 @@ public class Parser {
         waitingTime = Integer.parseInt(waitingTimeString);
         return waitingTime;
     }
-
 }

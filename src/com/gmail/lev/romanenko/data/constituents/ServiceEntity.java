@@ -1,9 +1,11 @@
 package com.gmail.lev.romanenko.data.constituents;
 
-public class Service {
+import java.util.Objects;
+
+public class ServiceEntity {
     String service;
     Variation variation;
-    public Service(String service,Variation variation) {
+    public ServiceEntity(String service, Variation variation) {
         this.service = service;
         this.variation = variation;
     }
@@ -32,5 +34,16 @@ public class Service {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ServiceEntity)) return false;
+        ServiceEntity serviceEntity = (ServiceEntity) o;
+        return Objects.equals(this.service, serviceEntity.service);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.service);
+    }
 }

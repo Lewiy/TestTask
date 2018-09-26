@@ -2,15 +2,15 @@ package com.gmail.lev.romanenko.data.line;
 
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
-import com.gmail.lev.romanenko.data.constituents.Service;
+import com.gmail.lev.romanenko.data.constituents.ServiceEntity;
 
 public abstract class Line {
-    protected Service service;
+    protected ServiceEntity serviceEntity;
     protected Question questionType;
     protected Response responseType;
 
-    public Line(Service service, Question questionType, Response responseType) {
-        this.service = service;
+    public Line(ServiceEntity serviceEntity, Question questionType, Response responseType) {
+        this.serviceEntity = serviceEntity;
         this.questionType = questionType;
         this.responseType = responseType;
     }
@@ -18,12 +18,12 @@ public abstract class Line {
     public Line() {
     }
 
-    public Service getService() {
-        return service;
+    public ServiceEntity getServiceEntity() {
+        return serviceEntity;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setServiceEntity(ServiceEntity serviceEntity) {
+        this.serviceEntity = serviceEntity;
     }
 
     public Question getQuestionType() {

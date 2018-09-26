@@ -3,10 +3,8 @@ package com.gmail.lev.romanenko.data.line.lines;
 import com.gmail.lev.romanenko.data.constituents.DatePeriod;
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
-import com.gmail.lev.romanenko.data.constituents.Service;
+import com.gmail.lev.romanenko.data.constituents.ServiceEntity;
 import com.gmail.lev.romanenko.data.line.Line;
-
-import java.util.Date;
 
 public class DLine extends Line {
     private DatePeriod datePeriod;
@@ -24,13 +22,13 @@ public class DLine extends Line {
     }
 
     public static class Builder {
-        private Service service;
+        private ServiceEntity serviceEntity;
         private Question questionType;
         private Response responseType;
         private DatePeriod datePeriod;
 
-        public Builder(Service service, Question questionType, Response responseType) {
-            this.service = service;
+        public Builder(ServiceEntity serviceEntity, Question questionType, Response responseType) {
+            this.serviceEntity = serviceEntity;
             this.questionType = questionType;
             this.responseType = responseType;
         }
@@ -47,7 +45,7 @@ public class DLine extends Line {
 
 
     private DLine(Builder builder) {
-        this.service = builder.service;
+        this.serviceEntity = builder.serviceEntity;
         this.questionType = builder.questionType;
         this.responseType = builder.responseType;
        this.datePeriod = builder.datePeriod;

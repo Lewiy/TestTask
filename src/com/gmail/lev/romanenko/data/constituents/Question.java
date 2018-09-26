@@ -1,6 +1,16 @@
 package com.gmail.lev.romanenko.data.constituents;
 
+import java.util.Objects;
+
 public class Question {
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
 
     String question;
     private Category category;
@@ -49,5 +59,19 @@ public class Question {
 
         }
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(o == null) return false;
+        if (this == o) return true;
+        if (this.getClass() != o.getClass()) return false;
+        Question question = (Question) o;
+        return Objects.equals(this.question, question.question);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.question);
     }
 }
