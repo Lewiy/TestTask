@@ -1,6 +1,8 @@
 package com.gmail.lev.romanenko.Constants;
 
 public interface Constants {
+    int NUMBER_OF_CATEGORIES = 2;
+    int NUMBER_OF_DATES = 1;
     String QUERY_LINE = "D";
     String WAITING_LINE = "C";
     String LINE_SPLITER = " ";

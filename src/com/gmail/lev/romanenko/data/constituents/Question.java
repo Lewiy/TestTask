@@ -1,59 +1,53 @@
 package com.gmail.lev.romanenko.data.constituents;
 
 public class Question {
+
     String question;
+    private Category category;
+
+
+    public Question(String question, Category category) {
+        this.question = question;
+        this.category = category;
+    }
 
     public Question(String question) {
         this.question = question;
     }
 
-    private static class Type {
-        public Type(String type) {
-            this.type = type;
+    public static class Category {
+        private String category;
+        private SubCategory subCategory;
+
+        public Category(String category, SubCategory subCategory) {
+            this.category = category;
+            this.subCategory = subCategory;
         }
 
-        public String getType() {
-            return type;
+        public String getCategory() {
+            return category;
         }
 
-        public void setType(String type) {
-            this.type = type;
+        public void setCategory(String category) {
+            this.category = category;
         }
 
-        private String type;
+        public static class SubCategory {
 
-        private static class Category {
-            public Category(String category) {
-                this.category = category;
+            private String subCategory;
+
+            public SubCategory(String subCategory) {
+                this.subCategory = subCategory;
+            }
+            public String getSubCategory() {
+                return subCategory;
             }
 
-            private String category;
-
-            public String getCategory() {
-                return category;
-            }
-
-            public void setCategory(String category) {
-                this.category = category;
-            }
-
-            private static class SubCategory {
-                public SubCategory(String subCategory) {
-                    this.subCategory = subCategory;
-                }
-
-                private String subCategory;
-
-                public String getSubCategory() {
-                    return subCategory;
-                }
-
-                public void setSubCategory(String subCategory) {
-                    this.subCategory = subCategory;
-                }
-
+            public void setSubCategory(String subCategory) {
+                this.subCategory = subCategory;
             }
 
         }
+
     }
 }

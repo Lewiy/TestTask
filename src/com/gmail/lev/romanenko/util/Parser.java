@@ -1,6 +1,7 @@
 package com.gmail.lev.romanenko.util;
 
 import com.gmail.lev.romanenko.Constants.Constants;
+import com.gmail.lev.romanenko.data.Data;
 import com.gmail.lev.romanenko.data.constituents.DatePeriod;
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
@@ -13,10 +14,11 @@ import com.gmail.lev.romanenko.exception.InvalidDataFileResponse;
 import com.gmail.lev.romanenko.exception.InvalidDataFileService;
 import com.gmail.lev.romanenko.regex.RegexValidation;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class Parser {
     private String fileInput, fileOutPut;
@@ -30,31 +32,39 @@ public class Parser {
 
 
     public void parseData() {
+        Data data = new Data();
+        Map<DLine, List<CLine>> DAndCLines = new LinkedHashMap<>();
+        List<CLine> cLines = new ArrayList<>();
 
-        Scanner sc = new Scanner(fileInput);
-
+      Scanner sc = prepareScanner();
         while (sc.hasNextLine()) {
-            String[] parts = sc.next().split(RegexValidation.LINE_SPLITER);
+            String[] parts = sc.nextLine().split(Constants.LINE_SPLITER);
             if (parts[0].equals(Constants.WAITING_LINE)) {
-              /* CLine cLine = new CLine();
-               cLine.setService();
-               cLine.setQuestionType();
-               cLine.setResponseType();
-               cLine.setDate();
-               cLine.setWaitingTime();*/
-                CLine.Builder()
-                        .waitingTime()
-                        .date()
-                        .build;
-
+                CLine cLine = null;
+                cLine = new CLine.Builder(checkServiceString(parts[1]), checkQuestionString(parts[2]), checkResponseType(parts[3]))
+                        .date(createDate(parts[4]))
+                        .waitingTime(createWaitingTime(parts[5]))
+                        .build();
+                cLines.add(cLine);
             } else if (parts[0].equals(Constants.QUERY_LINE)) {
-                DLine.Builder()
-                        .datePeriod()
-                        .build;
+                DLine dLine = null;
+                dLine = new DLine.Builder(checkServiceString(parts[1]), checkQuestionString(parts[2]), checkResponseType(parts[3]))
+                        .datePeriod(devideDateToPeriod(parts[4]))
+                        .build();
+                DAndCLines.put(dLine, new ArrayList<>(cLines));
             }
-            System.out.println(sc.nextLine());
         }
+        int a = 0;
+    }
 
+    private Scanner prepareScanner() {
+        Scanner sc = null;
+        try {
+            sc = new Scanner(new File(fileInput));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return sc;
     }
 
     private Service checkServiceString(String serviceString) {
@@ -70,7 +80,7 @@ public class Parser {
     }
 
     private boolean checkServiceLenght(String[] serviceContains) {
-        return serviceContains.length == Constants.NUMBER_OF_ELEMENTS;
+        return serviceContains.length == Constants.NUMBER_OF_CATEGORIES;
     }
 
     private Question checkQuestionString(String questionString) {
@@ -90,7 +100,7 @@ public class Parser {
         Response response = null;
         try {
             if (RegexValidation.validationResponseType(responceType)) {
-                createService(responceType);
+                 response = createResponseType(responceType);
             }
         } catch (InvalidDataFileResponse invalidDataFileResponse) {
             invalidDataFileResponse.printStackTrace();
@@ -98,12 +108,12 @@ public class Parser {
         return response;
     }
 
-    private DatePeriod checkDatePeriod(String fromDate,String toDate) {
+    private DatePeriod checkDatePeriod(String fromDate, String toDate) {
 
         DatePeriod datePeriod = null;
         try {
-            if (RegexValidation.validationDate(fromDate)&& RegexValidation.validationDate(toDate)) {
-                createDatePeriod(fromDate,toDate);
+            if (RegexValidation.validationDate(fromDate) && RegexValidation.validationDate(toDate)) {
+                createDatePeriod(fromDate, toDate);
             }
         } catch (InvalidDataFileDatePeriod invalidDataFileDatePeriod) {
             invalidDataFileDatePeriod.printStackTrace();
@@ -112,33 +122,81 @@ public class Parser {
         }
         return datePeriod;
     }
+
     private Service createService(String serviceString) {
         Service service = null;
-        String[] serviceContains = serviceString.split(Constants.NUMBER_SPLITER);
-        String serviceId = serviceContains[0];
-        if (checkServiceLenght(serviceContains)) {
-            service = new Service(serviceId, createVariation(serviceContains[1]));
+        String[] serviceParts = serviceString.split(Constants.NUMBER_SPLITER);
+        String serviceId = serviceParts[0];
+        if (checkServiceLenght(serviceParts)) {
+            service = new Service(serviceId, createVariation(serviceParts[1]));
         } else {
             service = new Service(serviceId, null);
         }
         return service;
     }
 
-    private Service.Variation createVariation(String variation){
+    private Service.Variation createVariation(String variation) {
         return new Service.Variation(variation);
     }
 
-    private Question createQuestion(String question) {
-        return new Question(question);
+    private Question createQuestion(String questionString) {
+        Question question = null;
+        String[] questionParts = questionString.split(Constants.NUMBER_SPLITER);
+        if (questionParts.length > Constants.NUMBER_OF_CATEGORIES) {
+            question = new Question(questionParts[0], new Question.Category(questionParts[1], new Question.Category.SubCategory(questionParts[2])));
+        }
+        if (questionParts.length == Constants.NUMBER_OF_CATEGORIES) {
+            question = new Question(questionParts[0], new Question.Category(questionParts[1], null));
+        } else if(questionParts.length < Constants.NUMBER_OF_CATEGORIES) {
+            question = new Question(questionParts[0]);
+        }
+        return question;
     }
+
     private Response createResponseType(String responceType) {
         return new Response(responceType);
     }
+
+
+    private DatePeriod devideDateToPeriod(String undevidedDate) {
+        String[] datePeriods = undevidedDate.split(Constants.DATE_SPLITER);
+        DatePeriod datePeriod = null;
+        try {
+            if (datePeriods.length == 1) {
+
+                datePeriod = createDatePeriod(datePeriods[0], null);
+            } else {
+
+                datePeriod =  createDatePeriod(datePeriods[0], datePeriods[1]);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return datePeriod;
+    }
+
     private DatePeriod createDatePeriod(String fromDateString, String toDateString) throws ParseException {
         return new DatePeriod(createDate(fromDateString), createDate(toDateString));
     }
-    private Date createDate(String dateString) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_REGEX);
-        return formatter.parse(dateString);
+
+    private Date createDate(String dateString) {
+        if(dateString != null){
+            Date date = null;
+            SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_REGEX);
+            try {
+                date = formatter.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return date;
+        } else return null;
+
     }
+
+    private int createWaitingTime(String waitingTimeString) {
+        int waitingTime = 0;
+        waitingTime = Integer.parseInt(waitingTimeString);
+        return waitingTime;
+    }
+
 }

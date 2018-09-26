@@ -2,9 +2,10 @@ package com.gmail.lev.romanenko.data.constituents;
 
 public class Service {
     String service;
-
-    public Service(String service) {
+    Variation variation;
+    public Service(String service,Variation variation) {
         this.service = service;
+        this.variation = variation;
     }
 
     public String getService() {
@@ -15,7 +16,7 @@ public class Service {
         this.service = service;
     }
 
-    private static class Variation {
+    public static class Variation {
         String variation;
 
         public Variation(String variation) {

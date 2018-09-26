@@ -39,11 +39,12 @@ public class DLine extends Line {
             this.datePeriod = datePeriod;
             return this;
         }
+        public DLine build() {
+            return new DLine(this);
+        }
     }
 
-    public CLine build() {
-        return new CLine();
-    }
+
 
     private DLine(Builder builder) {
         this.service = builder.service;

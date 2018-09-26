@@ -16,9 +16,6 @@ public class CLine extends Line {
         this.date = date;
     }
 
-    public CLine() {
-    }
-
     public int getWaitingTime() {
         return waitingTime;
     }
@@ -57,11 +54,12 @@ public class CLine extends Line {
             this.date = date;
             return this;
         }
+        public CLine build() {
+            return new CLine(this);
+        }
     }
 
-    public CLine build() {
-        return new CLine();
-    }
+
 
     private CLine(Builder builder) {
         this.service = builder.service;
