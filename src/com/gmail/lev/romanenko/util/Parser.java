@@ -31,20 +31,23 @@ public class Parser {
 
 
     /**
-     *
-     * @return
+     *  One of the mains logic methods which transforming data from
+     *  text file to java classes representation
+     * @return the value which contain all data in LinkedHashMap
+     * representation wrapped in Data object
      */
     public Data parseData() {
         Data data = new Data();
         Map<DLine, List<CLine>> DAndCLines = new LinkedHashMap<>();
         List<CLine> cLines = new ArrayList<>();
         Scanner sc = prepareScanner();
+
         if(checkNumberLines(sc.nextLine()))
         while (sc.hasNextLine()) {
             String[] parts = sc.nextLine().split(Constants.LINE_SPLITER);
             if (parts[0].equals(Constants.WAITING_LINE)) {
                 CLine cLine = null;
-                cLine = new CLine.Builder(checkServiceString(parts[1]), checkQuestionString(parts[2]), checkResponseType(parts[3]))
+                cLine = new CLine.Builder(checkServiceString(parts[1]),checkQuestionString(parts[2]), checkResponseType(parts[3]))
                         .date(createDate(parts[4]))
                         .waitingTime(createWaitingTime(parts[5]))
                         .build();
