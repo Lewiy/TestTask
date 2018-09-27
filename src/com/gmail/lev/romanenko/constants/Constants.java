@@ -1,6 +1,10 @@
-package com.gmail.lev.romanenko.Constants;
+package com.gmail.lev.romanenko.constants;
 
 public interface Constants {
+
+    int COUNT_LINES_MUX = 100000;
+    int COUNT_LINES_MIN = 1;
+
     String SPECIAL_VALUE = "*";
     String DASH = "-";
     int NUMBER_OF_CATEGORIES = 2;

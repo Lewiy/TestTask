@@ -1,6 +1,6 @@
 package com.gmail.lev.romanenko.service;
 
-import com.gmail.lev.romanenko.Constants.Constants;
+import com.gmail.lev.romanenko.constants.Constants;
 import com.gmail.lev.romanenko.data.constituents.Question;
 import com.gmail.lev.romanenko.data.constituents.Response;
 import com.gmail.lev.romanenko.data.constituents.ServiceEntity;

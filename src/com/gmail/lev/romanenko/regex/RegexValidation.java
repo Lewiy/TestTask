@@ -1,6 +1,6 @@
 package com.gmail.lev.romanenko.regex;
 
-import com.gmail.lev.romanenko.Constants.Constants;
+import com.gmail.lev.romanenko.constants.Constants;
 import com.gmail.lev.romanenko.exception.InvalidDataFileDatePeriod;
 import com.gmail.lev.romanenko.exception.InvalidDataFileQuestion;
 import com.gmail.lev.romanenko.exception.InvalidDataFileResponse;

@@ -1,6 +1,6 @@
 package com.gmail.lev.romanenko.util;
 
-import com.gmail.lev.romanenko.Constants.Constants;
+import com.gmail.lev.romanenko.constants.Constants;
 import com.gmail.lev.romanenko.data.Data;
 import com.gmail.lev.romanenko.data.constituents.DatePeriod;
 import com.gmail.lev.romanenko.data.constituents.Question;
@@ -24,19 +24,22 @@ public class Parser {
     private String fileInput, fileOutPut;
     private RegexValidation regexValidation;
 
-    public Parser(String fileInput, String fileOutPut, RegexValidation regexValidation) {
+    public Parser(String fileInput, RegexValidation regexValidation) {
         this.fileInput = fileInput;
-        this.fileOutPut = fileOutPut;
         this.regexValidation = regexValidation;
     }
 
 
+    /**
+     *
+     * @return
+     */
     public Data parseData() {
         Data data = new Data();
         Map<DLine, List<CLine>> DAndCLines = new LinkedHashMap<>();
         List<CLine> cLines = new ArrayList<>();
-
-      Scanner sc = prepareScanner();
+        Scanner sc = prepareScanner();
+        if(checkNumberLines(sc.nextLine()))
         while (sc.hasNextLine()) {
             String[] parts = sc.nextLine().split(Constants.LINE_SPLITER);
             if (parts[0].equals(Constants.WAITING_LINE)) {
@@ -57,6 +60,13 @@ public class Parser {
         data.setDAndCLines(DAndCLines);
 
         return data;
+    }
+
+    private boolean checkNumberLines(String number) {
+        int numberLines = Integer.parseInt(number);
+        if (numberLines <= Constants.COUNT_LINES_MUX && numberLines >= Constants.COUNT_LINES_MIN)
+            return true;
+        else return false;
     }
 
     private Scanner prepareScanner() {
@@ -102,7 +112,7 @@ public class Parser {
         Response response = null;
         try {
             if (RegexValidation.validationResponseType(responceType)) {
-                 response = createResponseType(responceType);
+                response = createResponseType(responceType);
             }
         } catch (InvalidDataFileResponse invalidDataFileResponse) {
             invalidDataFileResponse.printStackTrace();
@@ -149,7 +159,7 @@ public class Parser {
         }
         if (questionParts.length == Constants.NUMBER_OF_CATEGORIES) {
             question = new Question(questionParts[0], new Question.Category(questionParts[1], null));
-        } else if(questionParts.length < Constants.NUMBER_OF_CATEGORIES) {
+        } else if (questionParts.length < Constants.NUMBER_OF_CATEGORIES) {
             question = new Question(questionParts[0]);
         }
         return question;
@@ -169,7 +179,7 @@ public class Parser {
                 datePeriod = createDatePeriod(datePeriods[0], null);
             } else {
 
-                datePeriod =  createDatePeriod(datePeriods[0], datePeriods[1]);
+                datePeriod = createDatePeriod(datePeriods[0], datePeriods[1]);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -182,7 +192,7 @@ public class Parser {
     }
 
     private Date createDate(String dateString) {
-        if(dateString != null){
+        if (dateString != null) {
             Date date = null;
             SimpleDateFormat formatter = new SimpleDateFormat(Constants.DATE_REGEX);
             try {
